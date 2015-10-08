@@ -1,26 +1,37 @@
-<h1>Welcome to <%= @list.name %></h1>
+<h1><%= @list.name() %></h1>
 
-<% sorted_tasks = Task.sort(@list.id()) %>
-<% if sorted_tasks.any?() %>
-  <h3>Here are your tasks:</h3>
-    <ul id="task_list">
-      <% sorted_tasks.each() do |task| %>
-        <li><%=task.description() %>, <%=task.due_date() %></li>
-      <% end %>
-   </ul>
-<% else %>
-  <p>You have no tasks in this list!</p>
+<% if @list.tasks().any?() %>
+  <h3>Here are all the tasks in this list:</h3>
+
+  <ul>
+    <% @list.tasks().each() do |task| %>
+      <li><%= task.description() %> </li>
+    <% end %>
+  </ul>
+
+  <% else %>
+    <p>There are no tasks on this list!</p>
 <% end %>
 
-<form action="/lists/<%= @list.id() %>" method="post">
-  <div class="form-group">
-    <label for="description"> Description: </label>
-    <input type="text" name="description" id="description" class="form-control">
+<h3>Add a task to <%= @list.name() %> </h3>
 
-    <label for="due_date"> Due Date: </label>
-    <input type="date" name="due_date" id="due_date" class="form-control">
-  </div>
-  <button name="button" class="btn" type="submit"> Add Task </button>
+<form action="/tasks" method="post">
+  <input id="list_id" name="list_id" type="hidden" value="<%= @list.id() %>">
+
+  <label for="description">Description of the task:</label>
+  <input id="description" name="description" type="text">
+
+  <button type="submit">Add task</button>
 </form>
 
-<a href="/"> Go Back to the Home Page </a>
+<hr>
+
+<div class="container">
+  <a href="/">Home</a>
+  <a href="/lists">View All Lists</a>
+  <a href="/lists/new">Add New List</a>
+</div>
+
+<div class="container">
+  <a href="/"><button class="btn">Home</a>
+</div>

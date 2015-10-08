@@ -1,23 +1,8 @@
-<h1><%= @list.name() %></h1>
+<h3>Create a new list:</h3>
 
-<% if @list.tasks().any?() %>
-  <h3>Here are all the tasks in this list:</h3>
+<form action="/lists" method="post">
+  <label for="name">List name</label>
+  <input id="name" name="name" type="text">
 
-  <ul>
-    <% @list.tasks().each() do |task| %>
-      <li><%= task.description() %> </li>
-    <% end %>
-  </ul>
-
-  <% else %>
-    <p>There are no tasks on this list!</p>
-  <% end %>
-
-<hr>  
-
-<div class="container">
-  <a href="/">Home</a>
-  <a href="/lists">View All Lists</a>
-  <a href="/lists/new">Add New List</a>
-  <a href="/lists/new">Add New Task</a>
-</div>   
+  <button type="submit">Add List</button>
+</form>

@@ -1,8 +1,9 @@
-source('http://rubygems.org')
+source('https://rubygems.org')
 
-gem('rspec')
-gem('pg')
 gem('sinatra')
 gem('sinatra-contrib')
-gem('pry')
+gem('rspec')
 gem('capybara')
+gem('launchy')
+gem('pry')
+gem('pg')
