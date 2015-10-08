@@ -1,23 +1,45 @@
 class Task
-	@@all_tasks = [] #this is a class variable, hence the @@
 
-  define_method(:initialize) do |description|
-  	@description = description #instance variable description set equal to the parameter description
+  attr_reader(:description, :list_id, :due_date)
+  tasks = []
+
+  def initialize(attributes)
+    @description = attributes.fetch(:description)
+    @list_id = attributes.fetch(:list_id)
+    @due_date = attributes.fetch(:due_date)
   end
 
-  define_method(:description) do #this is an instance method
-    @description
+  define_singleton_method(:all) do
+    returned_tasks = DB.exec("SELECT * FROM tasks;")
+    tasks = []
+    returned_tasks.each() do |task|
+      description = task.fetch("description")
+      list_id = task.fetch("list_id").to_i()
+      due_date = Date.parse(task.fetch("due_date"))
+      tasks.push(Task.new({:description => description,:list_id => list_id, :due_date => due_date}))
+    end
+    tasks
   end
 
-  define_singleton_method(:all) do  #this is a class method, hence the define singleton method 
-  	@@all_tasks
-  end	
+  define_method(:==) do |another_task|
+    self.description().==(another_task.description())
+  end
 
   define_method(:save) do
-  	@@all_tasks.push(self)
+    DB.exec("INSERT INTO tasks (description, list_id, due_date) VALUES ('#{@description}', #{@list_id}, '#{@due_date}');")
   end
-  
-  define_singleton_method(:clear) do
-    @@all_tasks = []
-  end  	
-end    	
+
+  define_singleton_method(:sort) do |id|
+    returned_tasks = DB.exec("SELECT * FROM tasks WHERE list_id = #{id} ORDER BY due_date;")
+    tasks = []
+    returned_tasks.each() do |task|
+      description = task.fetch("description")
+      list_id = task.fetch("list_id").to_i()
+      due_date = Date.parse(task.fetch("due_date"))
+      tasks.push(Task.new({:description => description, :list_id => list_id, :due_date => due_date}))
+    end
+    tasks
+  end
+
+
+end #end of class

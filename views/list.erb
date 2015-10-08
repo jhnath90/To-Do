@@ -1,0 +1,26 @@
+<h1>Welcome to <%= @list.name %></h1>
+
+<% sorted_tasks = Task.sort(@list.id()) %>
+<% if sorted_tasks.any?() %>
+  <h3>Here are your tasks:</h3>
+    <ul id="task_list">
+      <% sorted_tasks.each() do |task| %>
+        <li><%=task.description() %>, <%=task.due_date() %></li>
+      <% end %>
+   </ul>
+<% else %>
+  <p>You have no tasks in this list!</p>
+<% end %>
+
+<form action="/lists/<%= @list.id() %>" method="post">
+  <div class="form-group">
+    <label for="description"> Description: </label>
+    <input type="text" name="description" id="description" class="form-control">
+
+    <label for="due_date"> Due Date: </label>
+    <input type="date" name="due_date" id="due_date" class="form-control">
+  </div>
+  <button name="button" class="btn" type="submit"> Add Task </button>
+</form>
+
+<a href="/"> Go Back to the Home Page </a>
